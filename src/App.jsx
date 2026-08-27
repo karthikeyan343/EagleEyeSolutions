@@ -1,10 +1,15 @@
 import React from 'react'
-import MainPage from './Pages/MainPage'
+import FAQ from './Components/SpecifiedComponents/FAQ'
+import Contact from './Components/SpecifiedComponents/Contact'
+import Footer from './Components/SpecifiedComponents/Footer'
+
 
 const App = () => {
   return (
     <>
-    <MainPage/>
+    <FAQ/>
+    <Contact/>
+    <Footer/>
     </>
   )
 }
