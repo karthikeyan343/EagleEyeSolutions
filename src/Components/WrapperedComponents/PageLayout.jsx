@@ -11,12 +11,12 @@ const PageLayout = () => {
   return (
     <>
     <NavBar/>
-    <Hero/>
+    <Hero/> 
     <Service/>
     <AboutUs/>
     <FAQ/>
-    <Contact/>
-    <Footer/>
+    <Contact />
+    <Footer />
     </>
   )
 }
