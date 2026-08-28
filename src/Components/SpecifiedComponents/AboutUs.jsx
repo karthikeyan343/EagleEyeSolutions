@@ -1,517 +1,355 @@
-import React from "react";
-import {Box,Container,Grid,Typography,Card,CardContent} from "@mui/material";
-import VerifiedIcon from "@mui/icons-material/Verified";
-import EngineeringIcon from "@mui/icons-material/Engineering";
-import HighQualityIcon from "@mui/icons-material/WorkspacePremium";
-import SupportAgentIcon from "@mui/icons-material/SupportAgent";
-
-const aboutStandards = [
-  {
-    icon: <VerifiedIcon />,
-    title: "Reliability",
-    description:
-      "Dependable solutions you can count on, engineered for maximum uptime.",
-  },
-  {
-    icon: <EngineeringIcon />,
-    title: "Technical Expertise",
-    description:
-      "Knowledgeable and experienced technicians ensuring best-in-class execution.",
-  },
-  {
-    icon: <HighQualityIcon />,
-    title: "Quality & Precision",
-    description:
-      "Meticulous attention to detail and rigorous standards in every project.",
-  },
-  {
-    icon: <SupportAgentIcon />,
-    title: "Customer Support",
-    description:
-      "Dedicated, ongoing assistance and maintenance when you need it most.",
-  },
-];
+import React, { useEffect, useRef, useState } from 'react';
+import { Box, Typography, Container, Card, CardContent } from '@mui/material';
+import cctvImage from '../../assets/cctv.webp';
 
 const AboutUs = () => {
+  const [headerVisible, setHeaderVisible] = useState(false);
+  const [bannerVisible, setBannerVisible] = useState(false);
+  const [cardVisible, setCardVisible] = useState(false);
+  
+  const headerRef = useRef(null);
+  const bannerRef = useRef(null);
+  const cardRef = useRef(null);
+
+  useEffect(() => {
+    const observerCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.target === headerRef.current) {
+          setHeaderVisible(entry.isIntersecting);
+        }
+        if (entry.target === bannerRef.current) {
+          setBannerVisible(entry.isIntersecting);
+        }
+        if (entry.target === cardRef.current) {
+          setCardVisible(entry.isIntersecting);
+        }
+      });
+    };
+
+    const observerOptions = {
+      threshold: 0.15,
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    if (headerRef.current) observer.observe(headerRef.current);
+    if (bannerRef.current) observer.observe(bannerRef.current);
+    if (cardRef.current) observer.observe(cardRef.current);
+
+    return () => {
+      if (headerRef.current) observer.unobserve(headerRef.current);
+      if (bannerRef.current) observer.unobserve(bannerRef.current);
+      if (cardRef.current) observer.unobserve(cardRef.current);
+    };
+  }, []);
+
   return (
     <Box
-      id="about"
       component="section"
       sx={{
-        pt: {
-          xs: 5,
-          sm: 6,
-          md: 8,
-        },
-        pb: {
-          xs: 5,
-          sm: 6,
-          md: 8,
-        },
-        backgroundColor: "#f8fafc",
-        fontFamily: '"Barlow", sans-serif',
-        overflow: "hidden",
-        width: "100%",
-        maxWidth: "100vw",
-        boxSizing: "border-box",
-
-        "& *": {
+        width: '100%',
+        minHeight: { xs: 'auto', lg: '100vh' },
+        py: { xs: 8, lg: 12 },
+        px: { xs: 3, sm: 5, md: 8, xl: 12 },
+        background: 'linear-gradient(135deg,#06182D 0%,#082F49 38%,#0A5265 68%,#00CFC1 100%)',
+        position: 'relative',
+        overflow: 'hidden',
+        boxSizing: 'border-box',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        '& *': {
           fontFamily: '"Barlow", sans-serif !important',
+        },
+        // Decorative background glows
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: '-10%',
+          left: '-10%',
+          width: '50vw',
+          height: '50vw',
+          background: 'rgba(0,207,193,.18)',
+          borderRadius: '50%',
+          filter: 'blur(80px)',
+          zIndex: 0,
+          pointerEvents: 'none',
+        },
+        '&::after': {
+          content: '""',
+          position: 'absolute',
+          bottom: '-10%',
+          right: '-10%',
+          width: '50vw',
+          height: '50vw',
+          background: 'rgba(7,24,45,.22)',
+          borderRadius: '50%',
+          filter: 'blur(80px)',
+          zIndex: 0,
+          pointerEvents: 'none',
+        },
+        // Keyframe animations
+        '@keyframes fadeInDown': {
+          '0%': { opacity: 0, transform: 'translateY(-40px)' },
+          '100%': { opacity: 1, transform: 'translateY(0)' },
+        },
+        '@keyframes scaleIn': {
+          '0%': { opacity: 0, transform: 'scale(0.92)' },
+          '100%': { opacity: 1, transform: 'scale(1)' },
+        },
+        '@keyframes fadeInUp': {
+          '0%': { opacity: 0, transform: 'translateY(40px)' },
+          '100%': { opacity: 1, transform: 'translateY(0)' },
+        },
+        '.animate-fade-down': {
+          opacity: 0,
+          ...(headerVisible && {
+            animation: 'fadeInDown 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+          }),
+        },
+        '.animate-scale-in': {
+          opacity: 0,
+          ...(bannerVisible && {
+            animation: 'scaleIn 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+          }),
+        },
+        '.animate-fade-up': {
+          opacity: 0,
+          ...(cardVisible && {
+            animation: 'fadeInUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+          }),
         },
       }}
     >
-      <Container
-        maxWidth="lg"
-        sx={{
-          px: {
-            xs: 3,
-            sm: 5,
-            md: 6,
-            lg: 4,
-          },
-        }}
-      >
+      <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1, py: { xs: 2, lg: 4 } }}>
+        {/* Top Header Block */}
         <Box
+          ref={headerRef}
+          className="animate-fade-down"
           sx={{
-            width: "100%",
-            textAlign: "center",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            mb: {
-              xs: 4,
-              sm: 5,
-              md: 6,
-            },
+            textAlign: 'center',
+            maxWidth: { xs: 800, xl: 1000 },
+            mx: 'auto',
+            mb: { xs: 6, lg: 8 },
           }}
         >
-          <Box
-            component="span"
+          <Typography
             sx={{
-              display: "inline-block",
-
-                fontFamily:
-                  '"Barlow", sans-serif !important',
-
-                fontSize: {
-                  xs: "0.85rem",
-                  sm: "0.95rem",
-                  md: "1.2rem",
-                },
-
+              fontSize: { xs: '0.85rem', sm: '0.95rem', xl: '1.1rem' },
+              color: '#00CFC1',
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              fontFamily: '"Barlow Condensed", sans-serif !important',
               fontWeight: 700,
-
-              letterSpacing: "0.8px",
-
-              color: "#06182D",
-
-              textTransform: "uppercase",
-
-              backgroundColor: "#00CFC1",
-
-              px: {
-                xs: 2.2,
-                sm: 2.8,
-                md: 3,
-              },
-
-              py: {
-                xs: 0.8,
-                sm: 0.9,
-                md: 2,
-              },
-
-              borderRadius: "30px",
-
-              mb: {
-                xs: 2,
-                sm: 2.2,
-                md: 2.5,
-              },
+              mb: 1,
             }}
           >
-            Our Standards
-          </Box>
+            About Eagle Eye Solutions
+          </Typography>
           <Typography
             component="h2"
             sx={{
-              fontFamily:
-                '"Barlow Condensed", sans-serif !important',
-
-              fontSize: {
-                xs: "2rem",
-                sm: "2.6rem",
-                md: "3.2rem",
-              },
-
-              fontWeight: 600,
-
-              lineHeight: 1.05,
-
-              letterSpacing: "0.01em",
-
-              textTransform: "uppercase",
-
-              color: "#0A192F",
-
-              mb: {
-                xs: 2,
-                sm: 2.5,
-                md: 3,
-              },
+              fontFamily: '"Barlow Condensed", sans-serif !important',
+              fontSize: { xs: '2.25rem', sm: '2.75rem', md: '3.25rem', xl: '4rem' },
+              fontWeight: 700,
+              color: '#FFFFFF',
+              textTransform: 'uppercase',
+              lineHeight: 1.15,
+              mb: 2,
             }}
           >
-            About{" "}
-            <Box
-              component="span"
-              sx={{
-                color: "#00CFC1",
-                fontStyle: "italic",
-                mr:2,
-              }}
-            >
-              Eagle Eye
-            </Box>
-            Solutions
+            Your Trusted Partner for Advanced Infrastructure & Calibration
           </Typography>
-
           <Typography
             sx={{
-              width: "100%",
-
-              maxWidth: "1050px",
-
-              mx: "auto",
-
-              fontFamily:
-                '"Barlow", sans-serif !important',
-
-              color: "#4b5563",
-
-              fontSize: {
-                xs: "0.95rem",
-                sm: "1.05rem",
-                md: "1.15rem",
-              },
-
-              fontWeight: 400,
-
-              lineHeight: 1.65,
-
-              letterSpacing: "0.01em",
-
-              textAlign: "center",
+              fontSize: { xs: '0.95rem', md: '1.05rem', xl: '1.2rem' },
+              color: 'rgba(255,255,255,0.85)',
+              lineHeight: 1.6,
+              maxWidth: '850px',
+              mx: 'auto',
             }}
           >
-            Eagle Eye Solutions provides specialized technical
-            services for modern businesses, delivering reliable
-            and practical solutions designed around real-world
-            operational requirements. Our expertise spans
-            industrial weight calibration, advanced camera
-            monitoring, secure networking infrastructure, and
-            technical system setup. We combine technical
-            knowledge, precision, and dependable support to help
-            businesses build systems that perform consistently
-            and efficiently.
+            Bridging the gap between complex hardware integration, secure enterprise networking, and municipal surveillance excellence.
           </Typography>
         </Box>
-<Box
-  sx={{
-    display: "grid",
-    gridTemplateColumns: {
-      xs: "1fr",
-      sm: "repeat(2, minmax(0, 1fr))",
-    },
-    gap: {
-      xs: 2,
-      sm: 2.5,
-      md: 3,
-    },
-    width: "100%",
-  }}
->
-  {aboutStandards.map((item, index) => (
-    <Card
-      key={index}
-      elevation={0}
-      sx={{
-        position: "relative",
-        width: "100%",
-        height: {
-          xs: "auto",
-          sm: "190px",
-          md: "200px",
-        },
 
-        display: "flex",
-        overflow: "hidden",
-
-        backgroundColor: "#0A192F",
-
-        border:
-          "1px solid rgba(0,207,193,0.25)",
-
-        borderRadius: "14px",
-
-        boxSizing: "border-box",
-
-        boxShadow:
-          "0 10px 30px rgba(10,25,47,0.12)",
-
-        transition:
-          "transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease",
-
-        "&::before": {
-          content: '""',
-          position: "absolute",
-          top: 0,
-          left: "-120%",
-          width: "70%",
-          height: "100%",
-
-          background:
-            "linear-gradient(105deg, transparent, rgba(0,207,193,0.10), transparent)",
-
-          transform: "skewX(-20deg)",
-
-          transition: "left 0.7s ease",
-
-          pointerEvents: "none",
-        },
-
-        "&::after": {
-          content: '""',
-          position: "absolute",
-
-          top: 0,
-          right: 0,
-
-          width: "55px",
-          height: "55px",
-
-          borderTop:
-            "2px solid rgba(0,207,193,0.55)",
-
-          borderRight:
-            "2px solid rgba(0,207,193,0.55)",
-
-          borderTopRightRadius: "14px",
-
-          pointerEvents: "none",
-        },
-
-        "&:hover": {
-          transform: "translateY(-6px)",
-
-          borderColor:
-            "rgba(0,207,193,0.7)",
-
-          boxShadow:
-            "0 18px 40px rgba(0,207,193,0.14)",
-
-          "&::before": {
-            left: "140%",
-          },
-
-          "& .standard-icon": {
-            transform:
-              "scale(1.08) rotate(4deg)",
-
-            boxShadow:
-              "0 0 20px rgba(0,207,193,0.18)",
-          },
-
-          "& .standard-number": {
-            opacity: 0.12,
-
-            transform:
-              "translateY(-4px)",
-          },
-        },
-      }}
-    >
-      <Typography
-        className="standard-number"
-        sx={{
-          position: "absolute",
-
-          right: {
-            xs: 12,
-            sm: 16,
-            md: 18,
-          },
-
-          bottom: {
-            xs: -12,
-            sm: -15,
-            md: -18,
-          },
-
-          fontFamily:
-            '"Barlow Condensed", sans-serif !important',
-
-          fontSize: {
-            xs: "5rem",
-            sm: "6rem",
-            md: "7rem",
-          },
-
-          fontWeight: 700,
-
-          lineHeight: 1,
-
-          color: "#00CFC1",
-
-          opacity: 0.055,
-
-          transition:
-            "opacity 0.35s ease, transform 0.35s ease",
-
-          pointerEvents: "none",
-        }}
-      >
-        {String(index + 1).padStart(2, "0")}
-      </Typography>
-
-      <CardContent
-        sx={{
-          position: "relative",
-          zIndex: 2,
-
-          width: "100%",
-          height: "100%",
-
-          boxSizing: "border-box",
-
-          display: "flex",
-          flexDirection: "column",
-
-          justifyContent: "center",
-
-          p: {
-            xs: 2.5,
-            sm: 3,
-            md: 3.2,
-          },
-
-          "&:last-child": {
-            pb: {
-              xs: 2.5,
-              sm: 3,
-              md: 3.2,
-            },
-          },
-        }}
-      >
-        {/* ICON */}
-
+        {/* Main Split Grid Section (Single Image/Banner Display) */}
         <Box
-          className="standard-icon"
+          ref={bannerRef}
+          className="animate-scale-in"
           sx={{
-            width: {
-              xs: 42,
-              sm: 46,
-              md: 48,
-            },
-
-            height: {
-              xs: 42,
-              sm: 46,
-              md: 48,
-            },
-
-            display: "flex",
-
-            alignItems: "center",
-
-            justifyContent: "center",
-
-            borderRadius: "10px",
-
-            backgroundColor:
-              "rgba(0,207,193,0.09)",
-
-            border:
-              "1px solid rgba(0,207,193,0.3)",
-
-            color: "#00CFC1",
-
-            mb: {
-              xs: 1.5,
-              md: 1.8,
-            },
-
-            transition:
-              "transform 0.35s ease, box-shadow 0.35s ease",
-
-            "& svg": {
-              fontSize: {
-                xs: 22,
-                sm: 24,
-                md: 26,
+            maxWidth: '1000px',
+            mx: 'auto',
+            mb: { xs: 6, lg: 8 },
+          }}
+        >
+          <Box
+            sx={{
+              position: 'relative',
+              borderRadius: '16px',
+              overflow: 'hidden',
+              minHeight: { xs: 360, sm: 450, lg: 520, xl: 580 },
+              boxShadow: '0 16px 40px rgba(0,0,0,0.2)',
+              border: '1px solid rgba(8,47,73,.16)',
+              transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+              '&:hover': {
+                transform: 'translateY(-8px)',
+                boxShadow: '0 24px 60px rgba(0,207,193,0.25)',
+                '& img': {
+                  transform: 'scale(1.06)',
+                },
               },
-            },
-          }}
-        >
-          {item.icon}
+            }}
+          >
+            <Box
+              component="img"
+              src={cctvImage}
+              alt="Eagle Eye Solutions Operations"
+              sx={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                position: 'absolute',
+                inset: 0,
+                transition: 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+              }}
+            />
+            <Box
+              sx={{
+                position: 'absolute',
+                inset: 0,
+                background: 'linear-gradient(180deg, rgba(7,24,45,0.1) 30%, rgba(7,24,45,0.9) 100%)',
+              }}
+            />
+            <Box
+              sx={{
+                position: 'absolute',
+                bottom: { xs: 24, sm: 32, xl: 40 },
+                left: { xs: 24, sm: 32, xl: 40 },
+                right: { xs: 24, sm: 32, xl: 40 },
+                zIndex: 1,
+              }}
+            >
+              <Typography
+                component="h3"
+                sx={{
+                  fontFamily: '"Barlow Condensed", sans-serif !important',
+                  fontSize: { xs: '1.5rem', sm: '2rem', xl: '2.4rem' },
+                  fontWeight: 600,
+                  color: '#FFFFFF',
+                  textTransform: 'uppercase',
+                  mb: 1,
+                }}
+              >
+                Precision & Reliability at Scale
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: { xs: '0.9rem', sm: '1rem', md: '1.05rem', xl: '1.15rem' },
+                  color: 'rgba(255,255,255,0.85)',
+                  letterSpacing: '0.02em',
+                  maxWidth: '750px',
+                }}
+              >
+                Outfitting intersections, corporate networks, and weighbridges with industry-leading standards.
+              </Typography>
+            </Box>
+          </Box>
         </Box>
-        <Typography
-          component="h3"
+
+        {/* Detailed Secondary Full-Width Content Card Below */}
+        <Box
+          ref={cardRef}
+          className="animate-fade-up"
           sx={{
-            fontFamily:
-              '"Barlow Condensed", sans-serif !important',
-
-            fontSize: {
-              xs: "1.2rem",
-              sm: "1.3rem",
-              md: "1.45rem",
-            },
-
-            fontWeight: 600,
-
-            color: "#FFFFFF",
-
-            letterSpacing: "0.02em",
-
-            lineHeight: 1.15,
-
-            mb: {
-              xs: 0.8,
-              md: 1,
-            },
+            maxWidth: '1000px',
+            mx: 'auto',
           }}
         >
-          {item.title}
-        </Typography>
-        <Typography
-          sx={{
-            fontFamily:
-              '"Barlow", sans-serif !important',
+          <Card
+            elevation={0}
+            sx={{
+              width: '100%',
+              background: 'linear-gradient(145deg,#FFFFFF 0%,#F2FBFA 100%)',
+              border: '1px solid rgba(8,47,73,.16)',
+              borderRadius: '16px',
+              overflow: 'hidden',
+              boxShadow: '0 12px 35px rgba(0,0,0,0.15)',
+              transition: 'box-shadow 0.35s ease, border-color 0.35s ease, transform 0.35s ease',
+              '&:hover': {
+                borderColor: '#00CFC1',
+                transform: 'translateY(-4px)',
+                boxShadow: '0 20px 45px rgba(0,207,193,0.25)',
+              },
+            }}
+          >
+            <CardContent
+              sx={{
+                p: { xs: 4, sm: 5, md: 6 },
+                display: 'flex',
+                flexDirection: 'column',
+                textAlign: 'left',
+              }}
+            >
+              <Box
+                sx={{
+                  alignSelf: 'flex-start',
+                  px: 1.5,
+                  py: 0.4,
+                  borderRadius: '4px',
+                  background: 'linear-gradient(135deg,#07182D,#00CFC1)',
+                  color: '#FFFFFF',
+                  fontSize: '0.7rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  mb: 2,
+                }}
+              >
+                EXPERTISE
+              </Box>
 
-            fontSize: {
-              xs: "0.86rem",
-              sm: "0.92rem",
-              md: "0.98rem",
-            },
+              <Typography
+                component="h4"
+                sx={{
+                  fontFamily: '"Barlow Condensed", sans-serif !important',
+                  fontSize: { xs: '1.5rem', sm: '1.8rem', md: '2.1rem' },
+                  fontWeight: 600,
+                  color: '#07182D',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.02em',
+                  mb: 2,
+                  lineHeight: 1.2,
+                }}
+              >
+                Built for High-Stakes Environments & Seamless Integration
+              </Typography>
 
-            fontWeight: 400,
+              <Typography
+                sx={{
+                  fontSize: { xs: '0.9rem', sm: '0.95rem', md: '1.05rem' },
+                  lineHeight: 1.6,
+                  color: '#60788A',
+                  letterSpacing: '0.01em',
+                  mb: 2,
+                }}
+              >
+                Our comprehensive approach ensures every deployment meets rigorous compliance and stress benchmarks. From municipal monitoring grids to secure corporate networks, we engineer stability from the ground up, guaranteeing continuous uptime and crystal-clear data processing.
+              </Typography>
 
-            lineHeight: 1.5,
-
-            color:
-              "rgba(255,255,255,0.74)",
-
-            letterSpacing: "0.01em",
-
-            maxWidth: "95%",
-          }}
-        >
-          {item.description}
-        </Typography>
-      </CardContent>
-    </Card>
-  ))}
-</Box>
+              <Typography
+                sx={{
+                  fontSize: { xs: '0.9rem', sm: '0.95rem', md: '1.05rem' },
+                  lineHeight: 1.6,
+                  color: '#60788A',
+                  letterSpacing: '0.01em',
+                }}
+              >
+                Backed by certified testing protocols and expert field support, Eagle Eye Solutions delivers unmatched performance across all hardware assets under any weather or operational condition, giving you absolute control and peace of mind.
+              </Typography>
+            </CardContent>
+          </Card>
+        </Box>
       </Container>
     </Box>
   );
