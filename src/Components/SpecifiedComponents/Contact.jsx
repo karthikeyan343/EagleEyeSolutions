@@ -5,7 +5,7 @@ import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
-const fontFamily='"Barlow Condensed",sans-serif',secondaryColor="#00CFBA",navyColor="#07182D";
+const fontFamily='"Barlow",sans-serif',secondaryColor="#00CFBA",navyColor="#07182D";
 const services=["Weight Calibration","Camera Solutions","Network Setup","Camera Installation & Setup","Other Enquiry"];
 const contactItems=[
   {icon:PhoneOutlinedIcon,title:"Phone",value:"+1 (555) 123-4567",href:"tel:+15551234567"},

@@ -11,7 +11,7 @@ import {
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import ArrowRightAltRoundedIcon from "@mui/icons-material/ArrowRightAltRounded";
 
-const fontFamily = '"Barlow Condensed", sans-serif';
+const fontFamily = '"Barlow", sans-serif';
 const secondaryColor = "#00CFBA";
 const navyColor = "#07182D";
 
@@ -158,8 +158,8 @@ export default function FAQ() {
               lineHeight: 1.05
             }}
           >
-            Frequently Asked
-            <br />
+            Frequently Asked {' '}
+            
 
             <Box
               component="span"

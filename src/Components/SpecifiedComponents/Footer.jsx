@@ -7,7 +7,7 @@ import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import logo from "../../assets/logo.png";
 
-const fontFamily='"Barlow Condensed",sans-serif',secondaryColor="#00CFBA",navyColor="#07182D";
+const fontFamily='"Barlow",sans-serif',secondaryColor="#00CFBA",navyColor="#07182D";
 const quickLinks=[["Home","#home"],["Services","#services"],["About Us","#about"],["FAQ","#faq"],["Contact","#contact"]];
 const services=["Weight Calibration","Camera Solutions","Network Setup","Camera Installation & Setup"];
 const contacts=[
