@@ -1,251 +1,469 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography, Button } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import VideocamOutlinedIcon from "@mui/icons-material/VideocamOutlined";
-import LinkOutlinedIcon from "@mui/icons-material/LinkOutlined";
-import ScaleOutlinedIcon from "@mui/icons-material/ScaleOutlined";
 
-import heroImage from "../../assets/hero-bg.png";
+import cctvImage from "../../assets/cctv-camera1.png";
 
 const Hero = () => {
-const [typedText, setTypedText] = useState("");
+  const [typedText, setTypedText] = useState("");
 
-useEffect(() => {
-  const phrases = [
-    "For Your Business.",
-    "For Your Industry.",
-  ];
+  useEffect(() => {
+    const phrases = [
+      "For Your Business.",
+      "For Your Industry.",
+    ];
 
-  let phraseIndex = 0;
-  let charIndex = 0;
-  let deleting = false;
-  let pause = false;
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let deleting = false;
+    let pause = false;
+    let pauseTimeout;
 
-  const interval = setInterval(() => {
-    const currentPhrase = phrases[phraseIndex];
+    const interval = setInterval(() => {
+      const currentPhrase = phrases[phraseIndex];
 
-    if (pause) {
-      return;
-    }
+      if (pause) return;
 
-    if (!deleting) {
-      charIndex++;
+      if (!deleting) {
+        charIndex++;
 
-      setTypedText(currentPhrase.slice(0, charIndex));
+        setTypedText(currentPhrase.slice(0, charIndex));
 
-      if (charIndex === currentPhrase.length) {
-        pause = true;
+        if (charIndex === currentPhrase.length) {
+          pause = true;
 
-        setTimeout(() => {
-          pause = false;
-          deleting = true;
-        }, 1800);
+          pauseTimeout = setTimeout(() => {
+            pause = false;
+            deleting = true;
+          }, 1800);
+        }
+      } else {
+        charIndex--;
+
+        setTypedText(currentPhrase.slice(0, charIndex));
+
+        if (charIndex === 0) {
+          deleting = false;
+          phraseIndex = (phraseIndex + 1) % phrases.length;
+        }
       }
-    } else {
-      charIndex--;
+    }, 80);
 
-      setTypedText(currentPhrase.slice(0, charIndex));
-
-      if (charIndex === 0) {
-        deleting = false;
-        phraseIndex = (phraseIndex + 1) % phrases.length;
-      }
-    }
-  }, 80);
-
-  return () => clearInterval(interval);
-}, []);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(pauseTimeout);
+    };
+  }, []);
 
   return (
 <Box
-  id='home'
+  id="home"
   sx={{
-    minHeight: "100vh",
-    marginTop: "-84px",
-    paddingTop: "84px",
     position: "relative",
-    backgroundImage: `url(${heroImage})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
+    width: "100%",
+    height:'90vh',
+
+    /*
+      Navbar fixed/absolute இருப்பதால்
+      Hero அதற்கு கீழே start ஆகும்.
+    */
+    marginTop: {
+      xs: "72px",
+      md: "82px",
+    },
+
+    minHeight: {
+      xs: "calc(100vh - 72px)",
+      md: "calc(100vh - 96px)",
+    },
+
+    overflow: "hidden",
+
+    backgroundImage: `url(${cctvImage})`,
     backgroundRepeat: "no-repeat",
+
+    backgroundSize: {
+      xs: "auto 100%",
+      sm: "cover",
+      md: "cover",
+      lg: "cover",
+      xl: "cover",
+    },
+
+    backgroundPosition: {
+      xs: "72% center",
+      sm: "75% center",
+      md: "78% center",
+      lg: "center center",
+      xl: "center center",
+    },
+
+    backgroundColor: "aliceblue",
   }}
 >
+
+      {/* =====================================================
+          SOFT OVERLAY
+      ===================================================== */}
+
       <Box
         sx={{
-          height: "100%",
-          maxWidth: "1400px",
+          position: "absolute",
+          inset: 0,
+
+          zIndex: 1,
+
+          pointerEvents: "none",
+
+          background: {
+            xs: `
+              linear-gradient(
+                180deg,
+                rgba(240,248,255,0.90) 0%,
+                rgba(240,248,255,0.72) 45%,
+                rgba(240,248,255,0.25) 100%
+              )
+            `,
+
+            md: `
+              linear-gradient(
+                90deg,
+                rgba(240,248,255,0.98) 0%,
+                rgba(240,248,255,0.94) 30%,
+                rgba(240,248,255,0.72) 48%,
+                rgba(240,248,255,0.15) 68%,
+                rgba(240,248,255,0.00) 100%
+              )
+            `,
+          },
+        }}
+      />
+
+      {/* =====================================================
+          SUBTLE BOTTOM BLEND
+      ===================================================== */}
+
+      <Box
+        sx={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: 0,
+
+          height: {
+            xs: "25%",
+            md: "18%",
+          },
+
+          zIndex: 1,
+
+          pointerEvents: "none",
+
+          background:
+            "linear-gradient(to top, rgba(240,248,255,0.45), transparent)",
+        }}
+      />
+
+      {/* =====================================================
+          HERO CONTENT
+      ===================================================== */}
+
+      <Box
+        sx={{
+          position: "relative",
+
+          zIndex: 2,
+
+          width: "100%",
+
+          minHeight: {
+            xs: "auto",
+            md: "calc(100vh - 96px)",
+          },
+
+          maxWidth: "1600px",
+
           mx: "auto",
+
           px: {
             xs: 3,
             sm: 5,
             md: 7,
-            lg: 9,
+            lg: 6,
+            xl: 7,
           },
-           py: {
-            xs: 10,
-            sm: 5,
+
+          py: {
+            xs: 8,
+            sm: 8,
             md: 7,
-            lg: 10,
+            lg: 6,
           },
 
           display: "flex",
+
           alignItems: "center",
+
+          /*
+            IMPORTANT:
+            Content only takes left side.
+            Camera remains completely independent
+            in the background.
+          */
+          justifyContent: "flex-start",
         }}
       >
+
+        {/* =====================================================
+            LEFT CONTENT
+        ===================================================== */}
+
         <Box
           sx={{
             width: {
               xs: "100%",
-              md: "65%",
-              lg: "62%",
+              sm: "90%",
+              md: "62%",
+              lg: "58%",
+              xl: "56%",
             },
-            mt: {
-              xs: -2,
-              md: -1,
+
+            maxWidth: "850px",
+
+            display: "flex",
+
+            flexDirection: "column",
+
+            alignItems: "flex-start",
+
+            pt: {
+              xs: 2,
+              md: 1,
             },
           }}
         >
-<Box
-  sx={{
-    display: "inline-flex",
-    alignItems: "center",
-    border: "1px solid #00CFC1",
-    borderRadius: "30px",
-    px: {
-      xs: 2,
-      md: 2.5,
-    },
-    py: 0.8,
-    mb: {
-      xs: 2.5,
-      md: 3,
-    },
-    gap: 1.2,
-  }}
->
-<Box
-  sx={{
-    width: 10,
-    height: 10,
-    borderRadius: "50%",
-    backgroundColor: "#ff4d57",
-    flexShrink: 0,
 
-    animation: "statusBlink 1.2s ease-in-out infinite",
+          {/* =====================================================
+              ENTERPRISE BADGE
+          ===================================================== */}
 
-    "@keyframes statusBlink": {
-      "0%, 100%": {
-        opacity: 1,
-        boxShadow: "0 0 8px rgba(255, 77, 87, 0.7)",
-      },
-      "50%": {
-        opacity: 0.3,
-        boxShadow: "0 0 2px rgba(255, 77, 87, 0.2)",
-      },
-    },
-  }}
-/>
-
-  <Typography
-    sx={{
-      color: "#00CFC1",
-      fontSize: {
-        xs: "0.7rem",
-        sm: "0.8rem",
-        md: "0.98rem",
-      },
-      fontWeight: 700,
-      letterSpacing: "2px",
-    }}
-  >
-    ENTERPRISE INFRASTRUCTURE
-  </Typography>
-</Box>
-
-          {/* Main heading */}
-          <Typography
-            component="h1"
+          <Box
             sx={{
-            fontFamily: '"Barlow Condensed", sans-serif',
-              color: "#fff",
-              fontWeight: 500,
-              lineHeight: 0.98,
-               letterSpacing: "0.5px",
-              fontSize: {
-                xs: "2.8rem",
-                sm: "3.8rem",
-                md: "3.4rem",
-                lg: "4.2rem",
-                xl: "5.8rem",
+              display: "inline-flex",
+
+              alignItems: "center",
+
+              border: "1px solid #00CFC1",
+
+              borderRadius: "30px",
+
+              px: {
+                xs: 2,
+                md: 2.5,
               },
-              maxWidth: "950px",
+
+              py: 0.8,
+
+              mb: {
+                xs: 2.5,
+                md: 3,
+              },
+
+              gap: 1.2,
+
+              backgroundColor: "rgba(240,248,255,0.55)",
+
+              backdropFilter: "blur(3px)",
             }}
           >
-            Reliable Technical Solutions
-          </Typography>
+            <Box
+              sx={{
+                width: 10,
+
+                height: 10,
+
+                borderRadius: "50%",
+
+                backgroundColor: "#ff4d57",
+
+                flexShrink: 0,
+
+                animation:
+                  "statusBlink 1.2s ease-in-out infinite",
+
+                "@keyframes statusBlink": {
+                  "0%, 100%": {
+                    opacity: 1,
+
+                    boxShadow:
+                      "0 0 8px rgba(255,77,87,0.7)",
+                  },
+
+                  "50%": {
+                    opacity: 0.3,
+
+                    boxShadow:
+                      "0 0 2px rgba(255,77,87,0.2)",
+                  },
+                },
+              }}
+            />
+
+            <Typography
+              sx={{
+                color: "black",
+
+                fontSize: {
+                  xs: "0.7rem",
+                  sm: "0.8rem",
+                  md: "0.9rem",
+                  lg: "0.95rem",
+                },
+
+                fontWeight: 700,
+
+                letterSpacing: "2px",
+              }}
+            >
+              ENTERPRISE INFRASTRUCTURE
+            </Typography>
+          </Box>
+
+          {/* =====================================================
+              MAIN HEADING
+          ===================================================== */}
+
 <Typography
-  component="div"
+  component="h1"
   sx={{
     fontFamily: '"Barlow Condensed", sans-serif',
-    color: "#00CFC1",
-    fontWeight: 300,
-    lineHeight: 1,
-    
-    letterSpacing: "-2px",
+    fontWeight: 500,
     fontSize: {
-      xs: "2.4rem",
+      xs: "2.5rem",
       sm: "3.2rem",
-      md: "3.8rem",
-      lg: "3.6rem",
-      xl: "4.8rem",
+      md: "3.5rem",
+      lg: "3.9rem",
+      xl: "4.5rem",
     },
-    mt: 0.5,
-    display: "flex",
-    alignItems: "center",
-    minHeight: "1em",
+    lineHeight: 0.98,
+    letterSpacing: "0px",
+    color: "#06182D",
   }}
 >
-  {typedText}
-
-  <Box
-    component="span"
-    sx={{
-      display: "inline-block",
-      width: "3px",
-      height: "0.8em",
-      backgroundColor: "#00CFC1",
-      ml: "6px",
-      animation: "cursorBlink 0.8s step-end infinite",
-
-      "@keyframes cursorBlink": {
-        "0%, 100%": {
-          opacity: 1,
-        },
-        "50%": {
-          opacity: 0,
-        },
-      },
-    }}
-  />
+  Reliable Technical Solutions
 </Typography>
+
+          {/* =====================================================
+              TYPING TEXT
+          ===================================================== */}
+
           <Typography
-  sx={{
-    fontFamily: '"Barlow", sans-serif',
-    fontSize: {
-      xs: "15px",
-      sm: "17px",
-      md: "20px",
-    },
-    fontWeight: 400,
-    lineHeight: 1.55,
-    color: "rgba(255,255,255,0.82)",
-    mt:3
-  }}
+            component="div"
+            sx={{
+              fontFamily:
+                '"Barlow Condensed", sans-serif',
+
+              color: "#154340",
+
+              fontWeight: 300,
+
+              lineHeight: 1,
+
+              letterSpacing: "-2px",
+
+              fontSize: {
+                xs: "2.4rem",
+                sm: "3rem",
+                md: "3.4rem",
+                lg: "3.9rem",
+                xl: "4.5rem",
+              },
+
+              mt: 0.7,
+
+              display: "flex",
+
+              alignItems: "center",
+
+              minHeight: "1em",
+
+              textShadow:
+                "0 1px 8px rgba(240,248,255,0.4)",
+            }}
           >
-            Expertise in Weight Calibration, Camera Solutions, and Network
-            Connection & Setup. We build the reliable systems that power
+            {typedText}
+
+            <Box
+              component="span"
+              sx={{
+                display: "inline-block",
+
+                width: "3px",
+
+                height: "0.8em",
+
+                backgroundColor: "#00CFC1",
+
+                ml: "6px",
+
+                animation:
+                  "cursorBlink 0.8s step-end infinite",
+
+                "@keyframes cursorBlink": {
+                  "0%, 100%": {
+                    opacity: 1,
+                  },
+
+                  "50%": {
+                    opacity: 0,
+                  },
+                },
+              }}
+            />
+          </Typography>
+
+          {/* =====================================================
+              DESCRIPTION
+          ===================================================== */}
+
+          <Typography
+            sx={{
+              fontFamily: '"Barlow", sans-serif',
+
+              fontSize: {
+                xs: "15px",
+                sm: "17px",
+                md: "18px",
+                lg: "19px",
+              },
+
+              fontWeight: 400,
+
+              lineHeight: 1.55,
+
+              color: "black",
+
+              mt: 3,
+
+              maxWidth: {
+                xs: "100%",
+                md: "720px",
+              },
+
+              textShadow:
+                "0 1px 7px rgba(240,248,255,0.45)",
+            }}
+          >
+            Expertise in Weight Calibration, Camera
+            Solutions, and Network Connection & Setup.
+            We build the reliable systems that power
             modern enterprise.
           </Typography>
+
+          {/* =====================================================
+              BUTTONS
+          ===================================================== */}
+
 <Box
   sx={{
     display: "flex",
@@ -257,13 +475,18 @@ useEffect(() => {
     flexWrap: "wrap",
   }}
 >
+  {/* =================================================
+      GET A QUOTE
+  ================================================= */}
+
   <Button
     variant="contained"
     endIcon={
       <ArrowForwardIcon
         sx={{
           fontSize: "22px !important",
-          transition: "transform 0.35s ease",
+          transition:
+            "transform 0.45s cubic-bezier(0.22, 1, 0.36, 1)",
         }}
       />
     }
@@ -292,6 +515,7 @@ useEffect(() => {
       color: "#06182D",
 
       fontFamily: '"Barlow", sans-serif',
+
       fontSize: {
         xs: "0.9rem",
         md: "1rem",
@@ -301,12 +525,23 @@ useEffect(() => {
       letterSpacing: "0.8px",
       textTransform: "uppercase",
 
-      boxShadow: "0 0 0 rgba(0,207,193,0)",
+      boxShadow:
+        "0 8px 25px rgba(0,207,193,0.18)",
 
+      /*
+       * Main transition
+       */
       transition:
-        "transform 0.3s ease, box-shadow 0.3s ease",
+        "transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), " +
+        "box-shadow 0.4s ease, " +
+        "background-color 0.3s ease",
+
+      /*
+       * Shine layer
+       */
       "&::before": {
         content: '""',
+
         position: "absolute",
 
         top: 0,
@@ -316,58 +551,94 @@ useEffect(() => {
         height: "100%",
 
         background:
-          "linear-gradient(110deg, transparent 20%, rgba(255,255,255,0.35), transparent 80%)",
+          "linear-gradient(" +
+          "105deg, " +
+          "transparent 0%, " +
+          "rgba(255,255,255,0.05) 35%, " +
+          "rgba(255,255,255,0.55) 50%, " +
+          "rgba(255,255,255,0.05) 65%, " +
+          "transparent 100%" +
+          ")",
 
         transform: "skewX(-20deg)",
 
-        transition: "left 0.65s ease",
+        transition:
+          "left 0.7s cubic-bezier(0.22, 1, 0.36, 1)",
 
         pointerEvents: "none",
       },
 
-      "&::after": {
-        content: '""',
-        position: "absolute",
-
-        right: 0,
-        bottom: 0,
-
-        width: "18px",
-        height: "18px",
-
-        borderRight: "2px solid rgba(6,24,45,0.45)",
-        borderBottom: "2px solid rgba(6,24,45,0.45)",
-
-        pointerEvents: "none",
-      },
-
+      /*
+       * Hover
+       */
       "&:hover": {
         backgroundColor: "#00CFC1",
 
-        transform: "translateY(-3px)",
+        transform:
+          "translateY(-5px) scale(1.02)",
 
         boxShadow:
-          "0 8px 30px rgba(0,207,193,0.28)",
+          "0 16px 38px rgba(0,207,193,0.32), " +
+          "0 0 0 1px rgba(0,207,193,0.15)",
 
         "&::before": {
-          left: "130%",
+          left: "140%",
         },
 
         "& .MuiButton-endIcon": {
-          transform: "translateX(5px)",
+          transform:
+            "translateX(7px)",
         },
+      },
+
+      /*
+       * Click / press
+       */
+      "&:active": {
+        transform:
+          "translateY(-1px) scale(0.97)",
+
+        boxShadow:
+          "0 6px 15px rgba(0,207,193,0.2)",
+      },
+
+      /*
+       * Arrow
+       */
+      "& .MuiButton-endIcon": {
+        position: "relative",
+        zIndex: 2,
+
+        marginLeft: "10px",
+
+        transition:
+          "transform 0.45s cubic-bezier(0.22, 1, 0.36, 1)",
+      },
+
+      /*
+       * Text stays above shine
+       */
+      "& > *": {
+        position: "relative",
+        zIndex: 2,
       },
     }}
   >
     Get a Quote
   </Button>
+
+  {/* =================================================
+      EXPLORE SERVICES
+  ================================================= */}
+
   <Button
-    variant="outlined"
+    variant="contained"
     endIcon={
       <ArrowForwardIcon
         sx={{
           fontSize: "22px !important",
-          transition: "transform 0.35s ease",
+          transition:
+            "transform 0.45s cubic-bezier(0.22, 1, 0.36, 1)",
         }}
       />
     }
@@ -377,7 +648,7 @@ useEffect(() => {
 
       minWidth: {
         xs: 190,
-        md: 230,
+        md: 215,
       },
 
       height: {
@@ -392,13 +663,8 @@ useEffect(() => {
 
       borderRadius: "4px",
 
-      color: "#FFFFFF",
-
-      border: "1px solid rgba(0,207,193,0.8)",
-
-      backgroundColor: "rgba(3,20,40,0.28)",
-
-      backdropFilter: "blur(4px)",
+      backgroundColor: "#00CFC1",
+      color: "#06182D",
 
       fontFamily: '"Barlow", sans-serif',
 
@@ -408,15 +674,26 @@ useEffect(() => {
       },
 
       fontWeight: 700,
-
       letterSpacing: "0.8px",
-
       textTransform: "uppercase",
 
+      boxShadow:
+        "0 8px 25px rgba(0,207,193,0.18)",
+
+      /*
+       * Main transition
+       */
       transition:
-        "transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease",
+        "transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), " +
+        "box-shadow 0.4s ease, " +
+        "background-color 0.3s ease",
+
+      /*
+       * Shine layer
+       */
       "&::before": {
         content: '""',
+
         position: "absolute",
 
         top: 0,
@@ -426,48 +703,76 @@ useEffect(() => {
         height: "100%",
 
         background:
-          "linear-gradient(110deg, transparent 20%, rgba(0,207,193,0.18), transparent 80%)",
+          "linear-gradient(" +
+          "105deg, " +
+          "transparent 0%, " +
+          "rgba(255,255,255,0.05) 35%, " +
+          "rgba(255,255,255,0.55) 50%, " +
+          "rgba(255,255,255,0.05) 65%, " +
+          "transparent 100%" +
+          ")",
 
         transform: "skewX(-20deg)",
 
-        transition: "left 0.65s ease",
-
-        pointerEvents: "none",
-      },
-      "&::after": {
-        content: '""',
-        position: "absolute",
-
-        right: 0,
-        bottom: 0,
-
-        width: "18px",
-        height: "18px",
-
-        borderRight: "2px solid #00CFC1",
-        borderBottom: "2px solid #00CFC1",
+        transition:
+          "left 0.7s cubic-bezier(0.22, 1, 0.36, 1)",
 
         pointerEvents: "none",
       },
 
+      /*
+       * Hover
+       */
       "&:hover": {
-        borderColor: "#00CFC1",
+        backgroundColor: "#00CFC1",
 
-        backgroundColor:
-          "rgba(0,207,193,0.09)",
-
-        transform: "translateY(-3px)",
+        transform:
+          "translateY(-5px) scale(1.02)",
 
         boxShadow:
-          "0 8px 25px rgba(0,207,193,0.12)",
+          "0 16px 38px rgba(0,207,193,0.32), " +
+          "0 0 0 1px rgba(0,207,193,0.15)",
 
         "&::before": {
-          left: "130%",
+          left: "140%",
         },
 
         "& .MuiButton-endIcon": {
-          transform: "translateX(5px)",
+          transform:
+            "translateX(7px)",
         },
+      },
+
+      /*
+       * Click / press
+       */
+      "&:active": {
+        transform:
+          "translateY(-1px) scale(0.97)",
+
+        boxShadow:
+          "0 6px 15px rgba(0,207,193,0.2)",
+      },
+
+      /*
+       * Arrow
+       */
+      "& .MuiButton-endIcon": {
+        position: "relative",
+        zIndex: 2,
+
+        marginLeft: "10px",
+
+        transition:
+          "transform 0.45s cubic-bezier(0.22, 1, 0.36, 1)",
+      },
+
+      /*
+       * Text stays above shine
+       */
+      "& > *": {
+        position: "relative",
+        zIndex: 2,
       },
     }}
   >
@@ -476,198 +781,6 @@ useEffect(() => {
 </Box>
         </Box>
       </Box>
-<Box
-  sx={{
-    position: "absolute",
-    top: {
-      xs: "20%",
-      md: "30%",
-    },
-    right: {
-      xs: "5%",
-      md: "14%",
-    },
-    display: {
-      xs: "none",
-      md: "flex",
-    },
-    alignItems: "center",
-    gap: 1.5,
-    border: "1px solid rgba(0,207,193,0.45)",
-    borderRadius: "30px",
-    px: 2.5,
-    py: 1.2,
-    backgroundColor: "rgba(3,20,40,0.55)",
-
-    animation: "cctvFloat 5s ease-in-out infinite",
-
-    "@keyframes cctvFloat": {
-      "0%, 100%": {
-        transform: "translate(0, 0) rotate(0deg)",
-      },
-      "25%": {
-        transform: "translate(18px, -12px) rotate(2deg)",
-      },
-      "50%": {
-        transform: "translate(8px, -25px) rotate(0deg)",
-      },
-      "75%": {
-        transform: "translate(-12px, -10px) rotate(-2deg)",
-      },
-    },
-  }}
->
-  <Box
-    sx={{
-      width: 14,
-      height: 14,
-      borderRadius: "50%",
-      backgroundColor: "#ff4d57",
-      animation: "statusBlink 1.2s ease-in-out infinite",
-
-      "@keyframes statusBlink": {
-        "0%, 100%": {
-          opacity: 1,
-          boxShadow: "0 0 8px rgba(255,77,87,0.7)",
-        },
-        "50%": {
-          opacity: 0.3,
-          boxShadow: "0 0 2px rgba(255,77,87,0.2)",
-        },
-      },
-    }}
-  />
-
-  <VideocamOutlinedIcon
-    sx={{
-      color: "#00CFC1",
-      fontSize: 24,
-    }}
-  />
-
-  <Typography
-    sx={{
-      color: "#fff",
-      fontWeight: 700,
-      fontSize: "1rem",
-    }}
-  >
-    CCTV: REC
-  </Typography>
-</Box>
-
-{/* Network Status */}
-<Box
-  sx={{
-    position: "absolute",
-    top: "57%",
-    right: {
-      xs: "5%",
-      md: "9%",
-    },
-    display: {
-      xs: "none",
-      md: "flex",
-    },
-    alignItems: "center",
-    gap: 1.2,
-    border: "1px solid rgba(0,207,193,0.45)",
-    borderRadius: "30px",
-    px: 2.5,
-    py: 1.2,
-    backgroundColor: "rgba(3,20,40,0.55)",
-
-    animation: "networkFloat 6s ease-in-out infinite",
-
-    "@keyframes networkFloat": {
-      "0%, 100%": {
-        transform: "translate(0, 0) rotate(0deg)",
-      },
-      "25%": {
-        transform: "translate(-20px, -8px) rotate(-2deg)",
-      },
-      "50%": {
-        transform: "translate(-10px, 18px) rotate(1deg)",
-      },
-      "75%": {
-        transform: "translate(15px, 10px) rotate(2deg)",
-      },
-    },
-  }}
->
-  <LinkOutlinedIcon
-    sx={{
-      color: "#00CFC1",
-      fontSize: 23,
-    }}
-  />
-
-  <Typography
-    sx={{
-      color: "#fff",
-      fontWeight: 700,
-      fontSize: "1rem",
-    }}
-  >
-    LINK: STABLE
-  </Typography>
-</Box>
-
-<Box
-  sx={{
-    position: "absolute",
-    bottom: "18%",
-    right: {
-      xs: "5%",
-      md: "25%",
-    },
-    display: {
-      xs: "none",
-      md: "flex",
-    },
-    alignItems: "center",
-    gap: 1.2,
-    border: "1px solid rgba(0,207,193,0.45)",
-    borderRadius: "30px",
-    px: 2.5,
-    py: 1.2,
-    backgroundColor: "rgba(3,20,40,0.55)",
-
-    animation: "scaleFloat 7s ease-in-out infinite",
-
-    "@keyframes scaleFloat": {
-      "0%, 100%": {
-        transform: "translate(0, 0) rotate(0deg)",
-      },
-      "25%": {
-        transform: "translate(12px, -15px) rotate(2deg)",
-      },
-      "50%": {
-        transform: "translate(-8px, -25px) rotate(0deg)",
-      },
-      "75%": {
-        transform: "translate(-18px, -8px) rotate(-2deg)",
-      },
-    },
-  }}
->
-  <ScaleOutlinedIcon
-    sx={{
-      color: "#00CFC1",
-      fontSize: 23,
-    }}
-  />
-
-  <Typography
-    sx={{
-      color: "#fff",
-      fontWeight: 700,
-      fontSize: "1rem",
-    }}
-  >
-    0.000 KG
-  </Typography>
-</Box>
     </Box>
   );
 };
