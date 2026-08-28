@@ -12,7 +12,7 @@ const PageLayout = () => {
     <>
     <NavBar/>
     <Hero/> 
-    <Products/>
+    {/* <Products/> */}
     <Service/>
     <Contact />
      <AboutUs/>

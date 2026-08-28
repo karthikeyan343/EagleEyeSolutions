@@ -15,15 +15,13 @@ const NavBar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const services = document.getElementById("services");
+      const hero = document.getElementById("home");
 
-      if (!services) {
-        console.warn("Services section with id='services' not found");
-        return;
-      }
+      if (!hero) return;
 
-      const servicesTop = services.getBoundingClientRect().top;
-      setIsFloating(servicesTop <= 80);
+      const heroBottom = hero.getBoundingClientRect().bottom;
+
+      setIsFloating(heroBottom <= 0);
     };
 
     handleScroll();
@@ -42,18 +40,46 @@ const NavBar = () => {
 
   const navItems = [
     { label: "Home", href: "#home" },
+    { label: "Products", href: "#products" },
     { label: "Services", href: "#services" },
     { label: "About Us", href: "#about" },
-    { label: "FAQ", href: "#faq" },
     { label: "Contact", href: "#contact" },
   ];
+
+  const handleNavClick = (e, href) => {
+    if (!href.startsWith("#")) return;
+
+    e.preventDefault();
+
+    const target = document.querySelector(href);
+
+    if (!target) return;
+
+    const navbarHeight = 80;
+
+    const targetPosition =
+      target.getBoundingClientRect().top +
+      window.scrollY -
+      navbarHeight;
+
+    window.scrollTo({
+      top: targetPosition,
+      behavior: "smooth",
+    });
+
+    window.history.replaceState(null, "", href);
+  };
 
   return (
     <Box
       sx={{
-        position: "sticky",
+        position: "fixed",
         top: 0,
+        left: 0,
+        right: 0,
+
         zIndex: 1100,
+
         px: {
           xs: 0,
           sm: isFloating ? 1.5 : 0,
@@ -61,8 +87,13 @@ const NavBar = () => {
           lg: isFloating ? 6 : 0,
         },
 
-        transition:
-          "padding 0.45s ease",
+        pt: {
+          xs: 0,
+          sm: isFloating ? 1 : 0,
+          md: isFloating ? 1.5 : 0,
+        },
+
+        transition: "all 0.45s ease",
 
         pointerEvents: "none",
       }}
@@ -72,41 +103,34 @@ const NavBar = () => {
         elevation={0}
         sx={{
           pointerEvents: "auto",
-          backgroundColor: isFloating
-            ? "#07182D"
-            : "rgba(7, 24, 45, 0.12)",
 
-          backdropFilter: isFloating
-            ? "blur(12px)"
-            : "blur(3px)",
-
-          WebkitBackdropFilter: isFloating
-            ? "blur(12px)"
-            : "blur(3px)",
+          backgroundColor: "#07182D",
 
           border: isFloating
-            ? "1px solid rgba(0, 207, 193, 0.55)"
-            : "1px solid rgba(0, 207, 193, 0.3)",
+            ? "1px solid rgba(0, 207, 186, 0.65)"
+            : "1px solid #00CFBA",
 
           borderRadius: isFloating
             ? "16px"
             : "0px",
 
           boxShadow: isFloating
-            ? "0 12px 35px rgba(7, 24, 45, 0.25)"
+            ? "0 12px 35px rgba(7, 24, 45, 0.28)"
             : "none",
 
-          transform: isFloating
-            ? "translateY(10px)"
-            : "translateY(0)",
+          backdropFilter: isFloating
+            ? "blur(12px)"
+            : "none",
+
+          WebkitBackdropFilter: isFloating
+            ? "blur(12px)"
+            : "none",
 
           transition:
             "background-color 0.45s ease, " +
-            "backdrop-filter 0.45s ease, " +
             "border 0.45s ease, " +
             "border-radius 0.45s ease, " +
-            "box-shadow 0.45s ease, " +
-            "transform 0.45s ease",
+            "box-shadow 0.45s ease",
         }}
       >
         <Toolbar
@@ -124,24 +148,18 @@ const NavBar = () => {
             alignItems: "center",
           }}
         >
-
           <Box
             component="a"
             href="#home"
+            onClick={(e) =>
+              handleNavClick(e, "#home")
+            }
             sx={{
-              position: "relative",
-
-              left: {
-                xs: "-4px",
-                sm: "-8px",
-                md: "-12px",
-                lg: "-16px",
-              },
-
               display: "flex",
               alignItems: "center",
 
               textDecoration: "none",
+
               color: "#fff",
 
               flexShrink: 0,
@@ -155,7 +173,7 @@ const NavBar = () => {
             <Box
               component="img"
               src={logoBrand}
-              alt="Eye"
+              alt="Eagle Eye Solutions"
               sx={{
                 width: {
                   xs: 42,
@@ -170,6 +188,7 @@ const NavBar = () => {
                 },
 
                 objectFit: "cover",
+
                 display: "block",
 
                 mx: {
@@ -211,9 +230,7 @@ const NavBar = () => {
 
                     fontWeight: 700,
                     lineHeight: 1,
-
                     letterSpacing: "1px",
-
                     color: "#FFFFFF",
                   }}
                 >
@@ -234,11 +251,8 @@ const NavBar = () => {
 
                     fontWeight: 700,
                     lineHeight: 1,
-
                     letterSpacing: "1px",
-
                     color: "#00CFBA",
-
                     ml: "8px",
                   }}
                 >
@@ -276,6 +290,7 @@ const NavBar = () => {
               </Typography>
             </Box>
           </Box>
+
           <Box
             sx={{
               display: {
@@ -303,13 +318,16 @@ const NavBar = () => {
                 key={item.label}
                 component="a"
                 href={item.href}
+                onClick={(e) =>
+                  handleNavClick(e, item.href)
+                }
                 sx={{
                   position: "relative",
 
                   textDecoration: "none",
 
                   fontFamily:
-                    '"Titillium Web", sans-serif',
+                    '"Barlow", sans-serif',
 
                   color:
                     index === 0
@@ -338,6 +356,7 @@ const NavBar = () => {
                     position: "absolute",
 
                     left: 0,
+
                     bottom: 7,
 
                     width:
@@ -363,9 +382,13 @@ const NavBar = () => {
               </Typography>
             ))}
           </Box>
+
           <Button
             component="a"
             href="#contact"
+            onClick={(e) =>
+              handleNavClick(e, "#contact")
+            }
             variant="contained"
             disableElevation
             sx={{
@@ -425,6 +448,7 @@ const NavBar = () => {
           >
             Get a Quote
           </Button>
+
           <IconButton
             sx={{
               display: {
@@ -440,7 +464,9 @@ const NavBar = () => {
             <Box
               sx={{
                 display: "flex",
+
                 flexDirection: "column",
+
                 gap: "5px",
               }}
             >

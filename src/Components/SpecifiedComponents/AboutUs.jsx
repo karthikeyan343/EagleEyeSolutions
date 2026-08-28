@@ -1,4 +1,3 @@
-import React from "react";
 import {Box,Container,Grid,Typography,Card,CardContent} from "@mui/material";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import EngineeringIcon from "@mui/icons-material/Engineering";
