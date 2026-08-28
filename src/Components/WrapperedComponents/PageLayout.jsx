@@ -6,6 +6,7 @@ import AboutUs from '../SpecifiedComponents/AboutUs'
 import Contact from '../SpecifiedComponents/Contact'
 import Footer from '../SpecifiedComponents/Footer'
 import Products from '../SpecifiedComponents/Products'
+import QuotePopup from '../SpecifiedComponents/QuotePopup'
 
 const PageLayout = () => {
   return (
@@ -17,6 +18,7 @@ const PageLayout = () => {
     <Contact />
      <AboutUs/>
     <Footer />
+    <QuotePopup/>
     </>
   )
 }
