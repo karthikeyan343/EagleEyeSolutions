@@ -58,6 +58,7 @@ useEffect(() => {
 
   return (
 <Box
+  id='home'
   sx={{
     minHeight: "100vh",
     marginTop: "-84px",
@@ -69,10 +70,9 @@ useEffect(() => {
     backgroundRepeat: "no-repeat",
   }}
 >
-      {/* Content */}
       <Box
         sx={{
-          height: "96%",
+          height: "100%",
           maxWidth: "1400px",
           mx: "auto",
           px: {
@@ -85,7 +85,7 @@ useEffect(() => {
             xs: 10,
             sm: 5,
             md: 7,
-            lg: 18,
+            lg: 10,
           },
 
           display: "flex",
@@ -105,7 +105,6 @@ useEffect(() => {
             },
           }}
         >
-{/* Small label */}
 <Box
   sx={{
     display: "inline-flex",
@@ -124,7 +123,6 @@ useEffect(() => {
     gap: 1.2,
   }}
 >
-  {/* Red Status Dot */}
 <Box
   sx={{
     width: 10,
@@ -185,8 +183,6 @@ useEffect(() => {
           >
             Reliable Technical Solutions
           </Typography>
-
-         {/* Highlight heading */}
 <Typography
   component="div"
   sx={{
@@ -232,8 +228,6 @@ useEffect(() => {
     }}
   />
 </Typography>
-
-          {/* Description */}
           <Typography
   sx={{
     fontFamily: '"Barlow", sans-serif',
@@ -252,8 +246,6 @@ useEffect(() => {
             Connection & Setup. We build the reliable systems that power
             modern enterprise.
           </Typography>
-
-{/* Buttons */}
 <Box
   sx={{
     display: "flex",
@@ -265,7 +257,6 @@ useEffect(() => {
     flexWrap: "wrap",
   }}
 >
-  {/* ================= GET A QUOTE ================= */}
   <Button
     variant="contained"
     endIcon={
@@ -314,8 +305,6 @@ useEffect(() => {
 
       transition:
         "transform 0.3s ease, box-shadow 0.3s ease",
-
-      /* diagonal scanning effect */
       "&::before": {
         content: '""',
         position: "absolute",
@@ -336,7 +325,6 @@ useEffect(() => {
         pointerEvents: "none",
       },
 
-      /* small technical corner */
       "&::after": {
         content: '""',
         position: "absolute",
@@ -373,9 +361,6 @@ useEffect(() => {
   >
     Get a Quote
   </Button>
-
-
-  {/* ================= EXPLORE SERVICES ================= */}
   <Button
     variant="outlined"
     endIcon={
@@ -430,8 +415,6 @@ useEffect(() => {
 
       transition:
         "transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease",
-
-      /* moving cyan scan */
       "&::before": {
         content: '""',
         position: "absolute",
@@ -451,8 +434,6 @@ useEffect(() => {
 
         pointerEvents: "none",
       },
-
-      /* technical corner */
       "&::after": {
         content: '""',
         position: "absolute",
@@ -495,8 +476,6 @@ useEffect(() => {
 </Box>
         </Box>
       </Box>
-
-{/* CCTV Status */}
 <Box
   sx={{
     position: "absolute",
@@ -634,7 +613,6 @@ useEffect(() => {
   </Typography>
 </Box>
 
-{/* Scale Status */}
 <Box
   sx={{
     position: "absolute",
