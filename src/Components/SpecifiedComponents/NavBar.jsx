@@ -21,7 +21,6 @@ const NavBar = () => {
 
       const heroBottom = hero.getBoundingClientRect().bottom;
 
-      // Floating navbar only after Hero is completely crossed
       setIsFloating(heroBottom <= 0);
     };
 
@@ -42,7 +41,7 @@ const NavBar = () => {
   const navItems = [
     { label: "Home", href: "#home" },
     { label: "Products", href: "#products" },
-     { label: "Services", href: "#services" },
+    { label: "Services", href: "#services" },
     { label: "About Us", href: "#about" },
     { label: "Contact", href: "#contact" },
   ];
@@ -74,14 +73,6 @@ const NavBar = () => {
   return (
     <Box
       sx={{
-        /*
-         * =========================================
-         * FIXED NAVBAR
-         * =========================================
-         *
-         * This removes the white gap because the
-         * navbar no longer takes space in the page.
-         */
         position: "fixed",
         top: 0,
         left: 0,
@@ -89,10 +80,6 @@ const NavBar = () => {
 
         zIndex: 1100,
 
-        /*
-         * When floating, create white space
-         * around the navbar.
-         */
         px: {
           xs: 0,
           sm: isFloating ? 1.5 : 0,
@@ -117,20 +104,8 @@ const NavBar = () => {
         sx={{
           pointerEvents: "auto",
 
-          /*
-           * =========================================
-           * ALWAYS NAVY
-           * =========================================
-           *
-           * No transparency.
-           */
           backgroundColor: "#07182D",
 
-          /*
-           * =========================================
-           * FLOATING EFFECT
-           * =========================================
-           */
           border: isFloating
             ? "1px solid rgba(0, 207, 186, 0.65)"
             : "1px solid #00CFBA",
@@ -173,10 +148,6 @@ const NavBar = () => {
             alignItems: "center",
           }}
         >
-          {/* =====================================
-              LOGO
-              ===================================== */}
-
           <Box
             component="a"
             href="#home"
@@ -320,10 +291,6 @@ const NavBar = () => {
             </Box>
           </Box>
 
-          {/* =====================================
-              DESKTOP NAVIGATION
-              ===================================== */}
-
           <Box
             sx={{
               display: {
@@ -416,10 +383,6 @@ const NavBar = () => {
             ))}
           </Box>
 
-          {/* =====================================
-              GET A QUOTE
-              ===================================== */}
-
           <Button
             component="a"
             href="#contact"
@@ -485,10 +448,6 @@ const NavBar = () => {
           >
             Get a Quote
           </Button>
-
-          {/* =====================================
-              MOBILE MENU
-              ===================================== */}
 
           <IconButton
             sx={{
